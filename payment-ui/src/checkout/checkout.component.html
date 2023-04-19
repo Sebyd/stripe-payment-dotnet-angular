@@ -1,0 +1,28 @@
+<ng-container *ngIf="isPageLoading; else checkoutForm"></ng-container>
+<ng-template #checkoutForm>
+  <form class="mt-5" action="/charge" method="post" id="payment-form">
+    <div class="form-row">
+      <div id="paymentContainer" class="mt-3">
+        <!-- Stripe elements will be added here -->
+      </div>
+
+      <!-- Used to display form errors -->
+      <div
+        *ngIf="errorWhenAttemptingSubmit"
+        class="card-errors mt-3"
+        id="card-errors"
+        role="alert"
+      >
+        {{ errorWhenAttemptingSubmit }}
+      </div>
+    </div>
+    <button
+      mat-flat-button
+      (click)="submitAttempt()"
+      color="accent"
+      class="pay-now w-100"
+    >
+      ENABLE BILLING
+    </button>
+  </form>
+</ng-template>
