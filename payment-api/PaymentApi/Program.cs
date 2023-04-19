@@ -10,6 +10,7 @@ using PaymentApi.Common.Settings.Extensions;
 using PaymentApi.Common.Cors;
 using PaymentApi.Infrastructure.Mediator.Extensions;
 using FluentValidation;
+using PaymentApi.Services.Extensions;
 
 var (builder, services, configuration) = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ services.AddSwagger((SwaggerSettings x) =>
 services.AddAuthorization();
 services.AddControllers();
 services.AddHealthChecks();
+services.AddStripeClient();
 
 var (middleware, endpoints, app)
     = builder.Build();

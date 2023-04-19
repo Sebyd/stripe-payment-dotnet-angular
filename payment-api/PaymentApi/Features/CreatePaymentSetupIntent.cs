@@ -1,6 +1,8 @@
 ﻿using System;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using PaymentApi.Common.Api;
+using PaymentApi.Services;
 
 namespace PaymentApi.Features
 {
@@ -9,14 +11,54 @@ namespace PaymentApi.Features
         public class Command : IRequest<ApiResponse>
         {
             public string UserId { get; set; } = default!;
+            public string UserFirstName { get; set; } = default!;
+            public string UserLastName { get; set; } = default!;
+            public string UserEmail { get; set; } = default!;
+            public string? UserTaxId { get; set; }
+
             public string PlanId { get; set; } = default!;
         }
 
-        public class CommandHandler : IRequestHandler<CreatePaymentSetupIntent.Command, ApiResponse>
+        public class CommandValidator : AbstractValidator<Command>
         {
-            public Task<ApiResponse> Handle(Command request, CancellationToken cancellationToken)
+            public CommandValidator()
             {
-                return Task.FromResult(new ApiResponse("To be implemented"));
+                RuleFor(x => x.UserId)
+                    .NotEmpty();
+
+                RuleFor(x => x.UserFirstName)
+                   .NotEmpty();
+
+                RuleFor(x => x.UserLastName)
+                   .NotEmpty();
+
+                RuleFor(x => x.UserEmail)
+                    .NotEmpty();
+
+                RuleFor(x => x.PlanId)
+                    .NotEmpty();
+            }
+        }
+
+        public class CommandHandler : IRequestHandler<Command, ApiResponse>
+        {
+            private IStripeClient stripeClient;
+
+            public CommandHandler(IStripeClient stripeClient)
+            {
+                this.stripeClient = stripeClient;
+            }
+
+            public async Task<ApiResponse> Handle(Command request, CancellationToken cancellationToken)
+            {
+                //Create customer only if not exists
+                //TODO: get this from db first
+
+                var customerId = await stripeClient.CreateCustomerAsync(request.UserFirstName, request.UserLastName, request.UserEmail, request.UserTaxId);
+
+                var clientSecretForPaymentSetup = await stripeClient.CreateSetupIntentAsync(customerId, metadata: null);
+
+                return new ApiResponse(clientSecretForPaymentSetup);
             }
         }
     }

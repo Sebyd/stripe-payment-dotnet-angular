@@ -28,11 +28,14 @@
     <PackageReference Include="Equilobe.Microservice.Core.EfCore" Version="1.0.0" />
     <PackageReference Include="Equilobe.Microservice.Core.Swagger" Version="1.0.0" />
     <PackageReference Include="Equilobe.Microservice.Core.Logging" Version="1.0.0" />
+    <PackageReference Include="Stripe.net" Version="41.13.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Common\Settings\Models\" />
     <Folder Include="Common\Api\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\Extensions\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +47,9 @@
     <None Remove="Equilobe.Microservice.Core.Swagger" />
     <None Remove="Equilobe.Microservice.Core.Logging" />
     <None Remove="Common\Api\" />
+    <None Remove="Stripe.net" />
+    <None Remove="Services\" />
+    <None Remove="Services\Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="version.txt">
