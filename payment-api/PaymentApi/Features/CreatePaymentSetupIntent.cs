@@ -23,20 +23,20 @@ namespace PaymentApi.Features
         {
             public CommandValidator()
             {
-                RuleFor(x => x.UserId)
-                    .NotEmpty();
+                //RuleFor(x => x.UserId)
+                //    .NotEmpty();
 
-                RuleFor(x => x.UserFirstName)
-                   .NotEmpty();
+                //RuleFor(x => x.UserFirstName)
+                //   .NotEmpty();
 
-                RuleFor(x => x.UserLastName)
-                   .NotEmpty();
+                //RuleFor(x => x.UserLastName)
+                //   .NotEmpty();
 
-                RuleFor(x => x.UserEmail)
-                    .NotEmpty();
+                //RuleFor(x => x.UserEmail)
+                //    .NotEmpty();
 
-                RuleFor(x => x.PlanId)
-                    .NotEmpty();
+                //RuleFor(x => x.PlanId)
+                //    .NotEmpty();
             }
         }
 

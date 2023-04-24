@@ -60,7 +60,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       .subscribe(async (params) => {
         const { redirect_status } = params;
 
-        this.redirectIfCheckoutIsComplete(redirect_status);
+        if (redirect_status === 'succeeded' || redirect_status === 'failed') {
+          this.router.navigate([redirect_status], {
+            queryParamsHandling: 'preserve',
+            relativeTo: this.activatedRoute,
+          });
+          return;
+        }
 
         const selectedPlanId = params['planId'];
         this.createSetupIntentAndInitStripe(selectedPlanId);
@@ -68,7 +74,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   public async submitAttempt(): Promise<void> {
-    const return_url = window.location.href.split('?')[0];
+    const return_url = `${window.location.href.split('?')[0]}`;
 
     const errorObj = await this.stripeInstance.confirmSetup({
       //`Elements` instance that was used to create the Payment Element
@@ -97,7 +103,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public initStripePayment(paymentIntent: IPaymentSetupIntentResponse) {
     // Set up Stripe.js and Elements to use in checkout form, passing the client secret obtained in step 2
     const elements = this.stripeInstance.elements({
-      clientSecret: paymentIntent.clientSecret,
+      clientSecret: paymentIntent.value,
       appearance: CHECKOUT_APPEARANCE,
     });
 
@@ -110,18 +116,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     fromEvent(this.elements.getElement('payment') as any, 'change')
       .pipe(take(1))
       .subscribe((_) => (this.isPageLoading = false));
-  }
-
-  private redirectIfCheckoutIsComplete(redirectStatus: string): void {
-    if (redirectStatus !== 'succeeded' && redirectStatus !== 'failed') {
-      return;
-    }
-
-    this.router.navigate([redirectStatus], {
-      queryParamsHandling: 'preserve',
-      relativeTo: this.activatedRoute,
-    });
-    return;
   }
 
   public ngOnDestroy(): void {
