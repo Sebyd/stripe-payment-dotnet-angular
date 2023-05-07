@@ -1,5 +1,4 @@
-<ng-container *ngIf="isPageLoading; else checkoutForm"></ng-container>
-<ng-template #checkoutForm>
+<section>
   <form class="mt-5" action="/charge" method="post" id="payment-form">
     <div class="form-row">
       <div id="paymentContainer" class="mt-3">
@@ -17,6 +16,8 @@
       </div>
     </div>
     <button
+      type="button"
+      *ngIf="!isPageLoading"
       mat-flat-button
       (click)="submitAttempt()"
       color="accent"
@@ -25,4 +26,4 @@
       ENABLE BILLING
     </button>
   </form>
-</ng-template>
+</section>

@@ -1,3 +1,3 @@
 export interface IPaymentSetupIntentResponse {
-  clientSecret: string;
+  value: string;
 }

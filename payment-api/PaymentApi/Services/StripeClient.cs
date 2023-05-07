@@ -40,7 +40,7 @@ namespace PaymentApi.Services
                 Description = $"{firstName} {lastName}",
                 Email = email,
                 Name = $"{firstName} {lastName}",
-                TaxIdData = new List<CustomerTaxIdDataOptions> { }
+                // TaxIdData = new List<CustomerTaxIdDataOptions> { }
             };
 
             var service = new CustomerService();
